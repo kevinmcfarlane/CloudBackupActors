@@ -1,4 +1,4 @@
-# An Application That Backs Up Files to Cloud Storage Using [Akka.NET]
+# An Application That Backs Up Files To Cloud Storage Using [Akka.NET]
 
 This application backs up zipped folders from a PC to a cloud storage location such as OneDrive. 
 I created a version of this using conventional .NET code and then, as a learning exercise, I re-implemented it using [Akka.NET]. 
