@@ -22,7 +22,7 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 ##### Actors
 
-* __CloudBackupActor__ - Manages cloud backup from start to finish. Creates the other actors. Receives StartMessage, IncrementFolderCountMessage and StopMessage. Sends ZipMessage and StopMessage.
+* __CloudBackupActor__ - Manages cloud backup from start to finish. Creates the other actors. Receives StartMessage, IncrementFolderCountMessage. Sends ZipMessage.
 * __ZipActor__ - Manages zip operations on folders. Receives ZipMessage. Sends BackupMessage, IncrementFolderCountMessage, FolderChangesMessage and "no changes" message. 
 * __BackupActor__ - Backs up zip archive to cloud storage. Receives BackupMessage. Sends IncrementFolderCountMessage.
 * __BackupStatisticsActor__ - Logs statistics showing changes to folders. Receives FolderChangesMessage and "no changes" message.
@@ -34,7 +34,6 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * __IncrementFolderCountMessage__ - Instruction to increment the folder count after processing a folder with a specific kind of zip operation.
 * __FolderChangesMessage__ - Represents changes to files in a folder.
 * __BackupMessage__ - Instruction for backing up a zip archive to cloud storage.
-* __StopMessage__ - Instruction to stop actor processing.
 
 
 

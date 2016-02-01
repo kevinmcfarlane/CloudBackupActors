@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Akka.Actor;
 using Akka.Event;
 using Akka.Routing;
@@ -41,12 +42,6 @@ namespace CloudBackupActors.Actors
                 Logger.Info("Received: IncrementFolderCountMessage");
                 IncrementFolderCount();
             });
-
-            Receive<StopMessage>(message =>
-            {
-                Logger.Info("Received: StopMessage");
-                Stop();
-            });
         }
 
         #region Used in non-router version
@@ -77,23 +72,6 @@ namespace CloudBackupActors.Actors
         }
 
         #endregion
-
-        protected override SupervisorStrategy SupervisorStrategy()
-        {
-            return new OneForOneStrategy(exception =>
-            {
-                if (exception is IOException)
-                {
-                    Logger.Warning("Skipping folder...");
-
-                    IncrementFolderCount();
-
-                    return Directive.Resume;
-                }
-
-                return Directive.Restart;
-            });
-        }
 
         protected override void PreStart()
         {
@@ -138,9 +116,24 @@ namespace CloudBackupActors.Actors
         /// </remarks>
         private void CreateZipActorPool()
         {
+            SupervisorStrategy strategy = new OneForOneStrategy(exception =>
+            {
+                if (exception is IOException)
+                {
+                    Logger.Warning("Skipping folder... " + exception.Message);
+
+                    IncrementFolderCount();
+
+                    return Directive.Resume;
+                }
+
+                return Directive.Restart;
+            });
+
             _zipActor = Context
                 .ActorOf(Props.Create<ZipActor>()
-                .WithRouter(new RoundRobinPool(_numberOfFolders)), "Zip");
+                .WithRouter((new RoundRobinPool(_numberOfFolders))
+                .WithSupervisorStrategy(strategy)), "Zip");
         }
 
         private void CreateChildActors()
@@ -169,8 +162,11 @@ namespace CloudBackupActors.Actors
 
         private void Stop()
         {
-            Console.WriteLine(string.Format("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders));
-            Logger.Info(string.Format("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders));
+            Console.WriteLine("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders);
+            Logger.Info("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders);
+
+            Thread.Sleep(500);
+
             Context.System.Shutdown();
         }
 
@@ -178,7 +174,7 @@ namespace CloudBackupActors.Actors
         {
             if (finished)
             {
-                Self.Tell(new StopMessage());
+                Stop();
             }
         }
 

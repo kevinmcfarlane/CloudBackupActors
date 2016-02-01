@@ -92,10 +92,17 @@ namespace CloudBackupActors.Actors
             }
         }
 
+        /// <summary>
+        /// Creates zip from Visual Studio project folder if there are changes.
+        /// </summary>
+        /// <param name="sourceFolderPath">The source folder path.</param>
+        /// <returns>
+        /// True if Visual Studio zip created; otherwise false.
+        /// </returns>
         private bool TryCreateVisualStudioZip(string sourceFolderPath)
         {
             string zipFilePath = GetVisualStudioZipFilePath(sourceFolderPath);
-            string previewZipFilePath = CreatePreviewZipFile(sourceFolderPath, zipFilePath);
+            string previewZipFilePath = CreatePreviewZip(sourceFolderPath, zipFilePath);
 
             RemoveBinFolders(previewZipFilePath);
 
@@ -104,6 +111,14 @@ namespace CloudBackupActors.Actors
             return result;
         }
 
+        /// <summary>
+        /// Creates zip from folder if there are changes.
+        /// </summary>
+        /// <param name="sourceFolderPath">The source folder path.</param>
+        /// <returns>
+        /// True if zip created; otherwise false.
+        /// </returns>
+        /// <exception cref="System.IO.DirectoryNotFoundException"></exception>
         private bool TryCreateZip(string sourceFolderPath)
         {
             if (!Directory.Exists(sourceFolderPath))
@@ -112,14 +127,25 @@ namespace CloudBackupActors.Actors
             }
 
             string zipFilePath = GetZipFilePath(sourceFolderPath);
-            string previewZipFilePath = CreatePreviewZipFile(sourceFolderPath, zipFilePath);
+            string previewZipFilePath = CreatePreviewZip(sourceFolderPath, zipFilePath);
 
             bool result = TryCreateZip(zipFilePath, previewZipFilePath);
 
             return result;
         }
 
-        private string CreatePreviewZipFile(string sourceFolderPath, string zipFilePath)
+        /// <summary>
+        /// Creates a preview zip from the source folder path.
+        /// </summary>
+        /// <remarks>
+        /// The preview zip will later be compared with the existing zip for differences.
+        /// </remarks>
+        /// <param name="sourceFolderPath">The source folder path.</param>
+        /// <param name="zipFilePath">The original zip file path.</param>
+        /// <returns>
+        /// The preview zip path.
+        /// </returns>
+        private string CreatePreviewZip(string sourceFolderPath, string zipFilePath)
         {
             string previewZipFilePath = zipFilePath.Replace(".zip", ".preview.zip");
 
@@ -149,7 +175,6 @@ namespace CloudBackupActors.Actors
             string zipFilePath = GetZipFilePath(sourceFolderPath);
             string encryptedFilePath = GetEncryptedFilePath(sourceFolderPath);
 
-            // TODO: Skip for now
             Encrypt(zipFilePath, encryptedFilePath);
             Console.WriteLine("Encrypted zip: " + encryptedFilePath);
             Logger.Info("Encrypted zip: " + encryptedFilePath);
@@ -232,7 +257,7 @@ namespace CloudBackupActors.Actors
 
         private string GetEncryptedFilePath(string folderPath)
         {
-            return GetZipFilePath(folderPath) + ".aes";
+            return GetZipFilePath(folderPath) + ".enc";
         }
     }
 }
