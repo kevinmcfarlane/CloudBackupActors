@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Akka.Actor;
-using Akka.TestKit;
+﻿using Akka.Actor;
 using Akka.TestKit.NUnit;
 using CloudBackupActors.Actors;
 using CloudBackupActors.Messages;
@@ -13,6 +6,9 @@ using NUnit.Framework;
 
 namespace CloudBackupActors.Tests
 {
+
+    // TODO:
+
     [TestFixture]
     public class ZipActorTests : TestKit
     {
@@ -20,7 +16,6 @@ namespace CloudBackupActors.Tests
         //public void ZipActor_WhenReceivedRegularZip_ShouldIncrementRegularFolderCount()
         //{
         //    // Arrange
-        //    // (make ZipActor child of TestActor)
         //    var zipProps = Props.Create(() => new ZipActor());
         //    var zipActor = ActorOf(zipProps);
 
@@ -30,10 +25,9 @@ namespace CloudBackupActors.Tests
         //    zipActor.Tell(new ZipMessage(path, ZipKind.Regular));
 
         //    // Assert
-        //    var message = ExpectMsg<string>();
+        //    var message = ExpectMsgFrom<string>(zipActor);
 
         //    Assert.IsTrue(message.Contains("No changes detected in " + path));
-
 
         //    //Assert.AreEqual("abc", zipActor.UnderlyingActor.Message);
         //    //var message = ExpectMsg<IncrementFolderCountMessage>();
@@ -44,16 +38,20 @@ namespace CloudBackupActors.Tests
         //public void TestCase()
         //{
         //    // Arrange
-        //    var stats = CreateTestProbe();
-        //    var zipProps = Props.Create(() => new ZipActor(stats));
-        //    var zipActor = ActorOf(zipProps, "Zip");
+        //    //var statsProp = Props.Create(() => new BackupStatisticsActor());
+        //    //var statsActor = ActorOf(statsProp, "BackupStatistics");
+
+        //    var zipProps = Props.Create(() => new ZipActor());
+        //    var zipActor = ActorOf(zipProps);
+
+        //    var statsActor = CreateTestProbe();
 
         //    string path = @"C:\Users\Kevin\Documents\Cloud Backup Test";
-
-        //    // Act
         //    zipActor.Tell(new ZipMessage(path, ZipKind.Regular));
 
-        //    stats.ExpectMsgFrom<string>(zipActor, message => message.Contains("No changes detected in " + path));
+        //    // Act
+
+        //    statsActor.ExpectMsgFrom<string>(zipActor);
         //}
 
         //[Test]

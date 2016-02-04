@@ -5,7 +5,7 @@ using System.Linq;
 namespace CloudBackupActors.Messages
 {
     /// <summary>
-    /// The kind of zip operation
+    /// The kind of zip operation.
     /// </summary>
     public enum ZipKind
     {

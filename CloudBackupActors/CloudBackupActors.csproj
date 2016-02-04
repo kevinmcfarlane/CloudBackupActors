@@ -75,8 +75,10 @@
     <Compile Include="AkkaHelpers\ActorMetaData.cs" />
     <Compile Include="AkkaHelpers\ActorPaths.cs" />
     <Compile Include="Messages\BackupMessage.cs" />
+    <Compile Include="Messages\FolderCountIncrementedMessage.cs" />
     <Compile Include="Messages\IncrementFolderCountMessage.cs" />
     <Compile Include="Messages\FolderChangesMessage.cs" />
+    <Compile Include="Messages\StartedMessage.cs" />
     <Compile Include="Messages\StartMessage.cs" />
     <Compile Include="Messages\StopMessage.cs" />
     <Compile Include="Messages\ZipKind.cs" />

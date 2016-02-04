@@ -35,12 +35,14 @@ namespace CloudBackupActors.Actors
             {
                 Logger.Info("Received: StartMessage");
                 Start();
+                Sender.Tell(new StartedMessage());
             });
 
             Receive<IncrementFolderCountMessage>(message =>
             {
-                Logger.Info("Received: IncrementFolderCountMessage");
+                Logger.Info("Received: IncrementFolderCountMessage from " + Sender.Path);
                 IncrementFolderCount();
+                Sender.Tell(new FolderCountIncrementedMessage(message.ZipKind));
             });
         }
 
@@ -220,7 +222,8 @@ namespace CloudBackupActors.Actors
             {
                 Console.WriteLine("Processing {0}...", path);
                 Logger.Info("Processing {0}...", path);
-                _zipActor.Tell(new ZipMessage(path, zipKind));
+                //_zipActor.Tell(new ZipMessage(path, zipKind));
+                _zipActor.Tell(new ZipMessage(path, zipKind), Self);
             }
         }
     }

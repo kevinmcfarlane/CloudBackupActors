@@ -30,8 +30,10 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 ##### Messages
 
 * __StartMessage__ - Instruction to start actor processing.
+* __StartedMessage__ - Indicates actor processing has started.
 * __ZipMessage__ - Instruction to perform a zip operation.
 * __IncrementFolderCountMessage__ - Instruction to increment the folder count after processing a folder with a specific kind of zip operation.
+* __FolderCountIncrementedMessage__ - Indicates folder count has incremented, i.e., a folder has been processed.
 * __FolderChangesMessage__ - Represents changes to files in a folder.
 * __BackupMessage__ - Instruction for backing up a zip archive to cloud storage.
 

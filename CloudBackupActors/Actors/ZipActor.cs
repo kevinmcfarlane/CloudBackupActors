@@ -88,7 +88,7 @@ namespace CloudBackupActors.Actors
             {
                 string noChangesDetected = string.Format("No changes detected in {0}...", path);
                 Context.ActorSelection(ActorPaths.BackupStatisticsActor.Path).Tell(noChangesDetected);
-                Context.ActorSelection(ActorPaths.CloudBackupActor.Path).Tell(new IncrementFolderCountMessage(message.ZipKind));
+                Context.ActorSelection(ActorPaths.CloudBackupActor.Path).Tell(new IncrementFolderCountMessage(message.ZipKind), Self);
             }
         }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace CloudBackupActors.Messages
 {
     /// <summary>
