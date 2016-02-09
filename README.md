@@ -13,9 +13,9 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 ### Tech
 
-* [Akka.NET] - Akka.NET is a toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on .NET & Mono.
-* [NLog] - NLog is a free logging platform for .NET, Silverlight and Windows Phone with rich log routing and management capabilities.
-* [ZipDiff] - ZipDiff is a utility for comparing the contents of 2 different zip files.
+* [Akka.NET] - A toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on .NET & Mono.
+* [NLog] - A free logging platform for .NET, Silverlight and Windows Phone with rich log routing and management capabilities.
+* [ZipDiff] - A utility for comparing the contents of 2 different zip files.
 
 
 ### Overview
@@ -37,8 +37,19 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * __FolderChangesMessage__ - Represents changes to files in a folder.
 * __BackupMessage__ - Instruction for backing up a zip archive to cloud storage.
 
+##### Features
 
+* Actor routing using RoundRobinPool strategy.
+
+* Actor supervision using OneForOne strategy.
+
+* Predicate message filters (Receiving a message from an actor and handling it differently based on a condition).
+
+* Actor logging.
+
+See also [Akka.NET cheat sheet].
 
 [Akka.NET]: <http://getakka.net/>
 [NLog]: <http://nlog-project.org/>
 [ZipDiff]: <https://github.com/leekelleher/ZipDiff/>
+[Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>
