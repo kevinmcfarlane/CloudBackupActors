@@ -71,6 +71,7 @@
     <Compile Include="Actors\BackupStatisticsActor.cs" />
     <Compile Include="Actors\CloudBackupActor.cs" />
     <Compile Include="Actors\EncryptActor.cs" />
+    <Compile Include="Actors\LogMessageParts.cs" />
     <Compile Include="Actors\ZipActor.cs" />
     <Compile Include="AkkaHelpers\ActorMetaData.cs" />
     <Compile Include="AkkaHelpers\ActorPaths.cs" />

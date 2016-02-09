@@ -9,6 +9,8 @@ namespace CloudBackupActors.Tests
     [TestFixture]
     public class CloudBackupActorTests : TestKit
     {
+        private const string SourceFolderPath = @"C:\Users\Kevin\Documents\Cloud Backup Test";
+
         [Test]
         public void CloudBackupActor_WhenReceivedStart_ShouldSendStarted()
         {
@@ -29,7 +31,7 @@ namespace CloudBackupActors.Tests
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
 
             // Act-Assert
-            EventFilter.Info("Received: StartMessage").ExpectOne(() =>
+            EventFilter.Info(LogMessageParts.ReceivedStart).ExpectOne(() =>
             {
                 actor.Tell(new StartMessage());
             });
@@ -40,11 +42,11 @@ namespace CloudBackupActors.Tests
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
-            string path = @"C:\Users\Kevin\Documents\Cloud Backup Test";
+            string path = SourceFolderPath;
 
             // Act-Assert
             EventFilter
-                .Info(message: null, start: null, contains: "Received: IncrementFolderCountMessage from ")
+                .Info(message: null, start: null, contains: LogMessageParts.ReceivedIncrementFolderCount)
                 .ExpectOne(() =>
             {
                 actor.Tell(new IncrementFolderCountMessage(new ZipMessage(path, ZipKind.Regular).ZipKind));
@@ -56,7 +58,7 @@ namespace CloudBackupActors.Tests
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
-            string path = @"C:\Users\Kevin\Documents\Cloud Backup Test";
+            string path = SourceFolderPath;
 
             // Act
             actor.Tell(new IncrementFolderCountMessage(new ZipMessage(path, ZipKind.Regular).ZipKind));

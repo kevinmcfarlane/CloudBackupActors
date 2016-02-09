@@ -33,14 +33,14 @@ namespace CloudBackupActors.Actors
 
             Receive<StartMessage>(message =>
             {
-                Logger.Info("Received: StartMessage");
+                Logger.Info(LogMessageParts.ReceivedStart);
                 Start();
                 Sender.Tell(new StartedMessage());
             });
 
             Receive<IncrementFolderCountMessage>(message =>
             {
-                Logger.Info("Received: IncrementFolderCountMessage from " + Sender.Path);
+                Logger.Info(LogMessageParts.ReceivedIncrementFolderCount + Sender.Path);
                 IncrementFolderCount();
                 Sender.Tell(new FolderCountIncrementedMessage(message.ZipKind));
             });
@@ -122,7 +122,7 @@ namespace CloudBackupActors.Actors
             {
                 if (exception is IOException)
                 {
-                    Logger.Warning("Skipping folder... " + exception.Message);
+                    Logger.Warning(LogMessageParts.SkippingFolder + exception.Message);
 
                     IncrementFolderCount();
 
@@ -164,8 +164,8 @@ namespace CloudBackupActors.Actors
 
         private void Stop()
         {
-            Console.WriteLine("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders);
-            Logger.Info("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders);
+            Console.WriteLine(LogMessageParts.FinishedProcessing, _numberOfFolders);
+            Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
 
             Thread.Sleep(500);
 
@@ -188,8 +188,8 @@ namespace CloudBackupActors.Actors
         {
             if (sourceFolderPaths.Any())
             {
-                Console.WriteLine("Visual Studio projects...");
-                Logger.Info("Visual Studio projects...");
+                Console.WriteLine(LogMessageParts.VisualStudioProjects);
+                Logger.Info(LogMessageParts.VisualStudioProjects);
                 Console.WriteLine(Environment.NewLine);
 
                 SendZipMessages(sourceFolderPaths, ZipKind.VisualStudio);
@@ -206,8 +206,8 @@ namespace CloudBackupActors.Actors
         {
             if (sourceFolderPaths.Any())
             {
-                Console.WriteLine("Folders for encryption...");
-                Logger.Info("Folders for encryption...");
+                Console.WriteLine(LogMessageParts.FoldersForEncryption);
+                Logger.Info(LogMessageParts.FoldersForEncryption);
                 Console.WriteLine(Environment.NewLine);
 
                 SendZipMessages(sourceFolderPaths, ZipKind.Regular);
@@ -220,8 +220,8 @@ namespace CloudBackupActors.Actors
         {
             foreach (var path in sourceFolderPaths)
             {
-                Console.WriteLine("Processing {0}...", path);
-                Logger.Info("Processing {0}...", path);
+                Console.WriteLine(LogMessageParts.Processing, path);
+                Logger.Info(LogMessageParts.Processing, path);
                 //_zipActor.Tell(new ZipMessage(path, zipKind));
                 _zipActor.Tell(new ZipMessage(path, zipKind), Self);
             }

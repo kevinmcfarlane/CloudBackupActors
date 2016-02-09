@@ -21,7 +21,7 @@ namespace CloudBackupActors
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            string starting = "Starting...";
+            string starting = LogMessageParts.Starting;
             Console.WriteLine(starting);
             Logger.Info(starting);
             Console.WriteLine(Environment.NewLine);
@@ -35,7 +35,7 @@ namespace CloudBackupActors
             Console.WriteLine("Actor system shutdown...");
 
             stopwatch.Stop();
-            string finished = string.Format("Finished in {0}s.", (float)stopwatch.ElapsedMilliseconds / 1000);
+            string finished = string.Format(LogMessageParts.FinishedIn, (float)stopwatch.ElapsedMilliseconds / 1000);
             Console.WriteLine(finished);
             Logger.Info(finished);
         }
