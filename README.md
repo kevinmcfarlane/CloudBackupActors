@@ -7,13 +7,13 @@ I identify two types of folders - __Regular__ folders and __Visual Studio Projec
 
 For the former I zip and then encrypt them before backing up (encryption technique omitted).
 
-For the latter, I create a zip with the bin and obj folders omitted and then back them up.
+For the latter I create a zip with the bin and obj folders omitted and then back them up.
 
 The input is from a text file, SourceFolderPaths.txt, that contains a list of fully qualified paths to folders that require backing up.
 
 ### Tech
 
-* [Akka.NET] - A toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on .NET & Mono.
+* [Akka.NET] - A toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on .NET & Mono, based on the [Actor Model] of concurrency.
 * [NLog] - A free logging platform for .NET, Silverlight and Windows Phone with rich log routing and management capabilities.
 * [ZipDiff] - A utility for comparing the contents of 2 different zip files.
 
@@ -39,17 +39,19 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 ##### Features
 
-* Actor routing using RoundRobinPool strategy.
+* Actor routing using a _RoundRobinPool_ strategy.
 
-* Actor supervision using OneForOne strategy.
+* Actor supervision using a _OneForOne_ strategy.
 
-* Predicate message filters (Receiving a message from an actor and handling it differently based on a condition).
+* Predicate message filters (receiving a message from an actor and handling it differently based on a condition).
 
 * Actor logging.
 
-See also [Akka.NET cheat sheet].
+See also [What is an Actor?] and [Akka.NET cheat sheet].
 
+[Actor Model]: <https://en.wikipedia.org/wiki/Actor_model>
 [Akka.NET]: <http://getakka.net/>
 [NLog]: <http://nlog-project.org/>
 [ZipDiff]: <https://github.com/leekelleher/ZipDiff/>
+[What is an Actor?]: <https://petabridge.com/blog/akkadotnet-what-is-an-actor/>
 [Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>
