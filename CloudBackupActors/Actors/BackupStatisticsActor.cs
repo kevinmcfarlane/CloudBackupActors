@@ -35,10 +35,20 @@ namespace CloudBackupActors.Actors
 
         private void LogChanges(string zipFilePath, Differences differences)
         {
-            Console.WriteLine("In " + zipFilePath);
-            Logger.Info("In " + zipFilePath);
+            Console.WriteLine("In {0}...", zipFilePath);
+            Logger.Info("In {0}...", zipFilePath);
 
             var added = differences.Added;
+            var changed = differences.Changed;
+            var removed = differences.Removed;
+
+            int numberOfDifferences = added.Count + changed.Count + removed.Count;
+
+            if (numberOfDifferences > 0)
+            {
+                Console.WriteLine("Number of differences = {0}.", numberOfDifferences);
+                Logger.Info("Number of differences = {0}.", numberOfDifferences);
+            }
 
             if (added.Any())
             {
@@ -47,16 +57,12 @@ namespace CloudBackupActors.Actors
                 added.Keys.ToList().ForEach(k => { Console.WriteLine(k); Logger.Info(k); });
             }
 
-            var changed = differences.Changed;
-
             if (changed.Any())
             {
                 Console.WriteLine("Changed...");
                 Logger.Info("Changed...");
                 changed.Keys.ToList().ForEach(k => { Console.WriteLine(k); Logger.Info(k); });
             }
-
-            var removed = differences.Removed;
 
             if (removed.Any())
             {

@@ -6,13 +6,14 @@ using NUnit.Framework;
 
 namespace CloudBackupActors.Tests
 {
+
     [TestFixture]
     public class CloudBackupActorTests : TestKit
     {
         private const string SourceFolderPath = @"C:\Users\Kevin\Documents\Cloud Backup Test";
 
         [Test]
-        public void CloudBackupActor_WhenReceivedStart_ShouldSendStarted()
+        public void WhenReceivedStart_ShouldSendStarted()
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
@@ -25,7 +26,7 @@ namespace CloudBackupActors.Tests
         }
 
         [Test]
-        public void CloudBackupActor_ShouldLogStartMessage()
+        public void ShouldLogStartMessage()
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
@@ -38,7 +39,7 @@ namespace CloudBackupActors.Tests
         }
 
         [Test]
-        public void CloudBackupActor_ShouldLogIncrementFolderCountMessage()
+        public void ShouldLogIncrementFolderCountMessage()
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));
@@ -54,7 +55,7 @@ namespace CloudBackupActors.Tests
         }
 
         [Test]
-        public void CloudBackupActor_WhenReceivedIncrementFolderCount_ShouldSendFolderCountIncremented()
+        public void WhenReceivedIncrementFolderCount_ShouldSendFolderCountIncremented()
         {
             // Arrange
             var actor = ActorOf(Props.Create(() => new CloudBackupActor()));

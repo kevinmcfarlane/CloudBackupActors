@@ -17,6 +17,7 @@ namespace CloudBackupActors.Actors
         public const string SkippingFolder = "Skipping folder... ";
         public const string FinishedProcessing = "Finished processing {0} source folders, shutting down actor system...";
         public const string Processing = "Processing {0}...";
+        public const string Received = "Received: {0}";
         public const string ReceivedStart = "Received: StartMessage";
         public const string ReceivedIncrementFolderCount = "Received: IncrementFolderCountMessage from ";
     }
