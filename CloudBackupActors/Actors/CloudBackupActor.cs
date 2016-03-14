@@ -7,6 +7,7 @@ using Akka.Actor;
 using Akka.Event;
 using Akka.Routing;
 using CloudBackupActors.Messages;
+using System.Reflection;
 
 namespace CloudBackupActors.Actors
 {
@@ -168,6 +169,8 @@ namespace CloudBackupActors.Actors
             Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
 
             Thread.Sleep(500);
+            
+            BackupLogFilesToOneDrive();
 
             Context.System.Shutdown();
         }
@@ -225,6 +228,28 @@ namespace CloudBackupActors.Actors
                 //_zipActor.Tell(new ZipMessage(path, zipKind));
                 _zipActor.Tell(new ZipMessage(path, zipKind), Self);
             }
+        }
+        
+        /// <summary>
+        /// Backs up log files to OneDrive.
+        /// </summary>
+        private void BackupLogFilesToOneDrive()
+        {
+            BackupLogFileToOneDrive("logfile.txt");
+            BackupLogFileToOneDrive("logfile1.txt");
+        }
+
+        /// <summary>
+        /// Backs up the log file to OneDrive.
+        /// </summary>
+        /// <param name="logFileName">Name of the log file, e.g., logfile.txt.</param>
+        private void BackupLogFileToOneDrive(string logFileName)
+        {
+            const string BackupFolderPath = @"C:\Users\Kevin\SkyDrive\My Documents";
+            var logFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), logFileName);
+            string backupFilePath = Path.Combine(BackupFolderPath, logFileName);
+            File.Copy(logFilePath, backupFilePath, overwrite: true);
+            Console.WriteLine(string.Format("Backed up {0} to: {1}", logFileName, backupFilePath));
         }
     }
 }
