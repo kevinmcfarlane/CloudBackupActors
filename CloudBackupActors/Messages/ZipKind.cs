@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace CloudBackupActors.Messages
 {
     /// <summary>
@@ -13,6 +9,7 @@ namespace CloudBackupActors.Messages
         /// All contents will be added to the zip archive.
         /// </summary>
         Regular,
+
         /// <summary>
         /// A subset of contents will be added to the zip archive, e.g., will exclude *.dll, *.exe...
         /// </summary>

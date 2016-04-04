@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CloudBackupActors.Messages
+﻿namespace CloudBackupActors.Messages
 {
     /// <summary>
     /// Instruction for backing up a zip archive to cloud storage.
@@ -15,10 +9,12 @@ namespace CloudBackupActors.Messages
         /// The source folder path.
         /// </summary>
         public readonly string SourceFolderPath;
+
         /// <summary>
         /// The zip file path.
         /// </summary>
         public readonly string ZipFilePath;
+
         /// <summary>
         /// The kind of zip operation.
         /// </summary>

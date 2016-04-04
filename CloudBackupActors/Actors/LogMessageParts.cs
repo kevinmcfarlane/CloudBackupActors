@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CloudBackupActors.Actors
 {
@@ -20,5 +18,6 @@ namespace CloudBackupActors.Actors
         public const string Received = "Received: {0}";
         public const string ReceivedStart = "Received: StartMessage";
         public const string ReceivedIncrementFolderCount = "Received: IncrementFolderCountMessage from ";
+        public const string ReceivedStop = "Received: StopMessage";
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using Akka.Actor;
 using Akka.Event;
@@ -19,6 +18,7 @@ namespace CloudBackupActors.Actors
         private int _numberOfFolders;
         private int _numberOfFoldersProcessed;
         private IActorRef _zipActor;
+        private IActorRef _backupActor;
         private IEnumerable<string> _sourceFolderPaths;
         private readonly ILoggingAdapter Logger = Context.GetLogger();
 
@@ -45,45 +45,12 @@ namespace CloudBackupActors.Actors
                 IncrementFolderCount();
                 Sender.Tell(new FolderCountIncrementedMessage(message.ZipKind));
             });
-        }
 
-        #region Used in non-router version
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CloudBackupActor"/> class.
-        /// </summary>
-        /// <param name="numberOfFolders"></param>
-        public CloudBackupActor(int numberOfFolders)
-        {
-            _numberOfFolders = numberOfFolders;
-
-            Context.ActorOf(Props.Create<BackupStatisticsActor>(), "BackupStatistics");
-            Context.ActorOf(Props.Create<ZipActor>(), "Zip");
-            Context.ActorOf(Props.Create<BackupActor>(), "Backup");
-
-            Receive<IncrementFolderCountMessage>(message =>
+            Receive<StopMessage>(message =>
             {
-                Console.WriteLine("Received: IncrementFolderCountMessage");
-
-                _numberOfFoldersProcessed++;
-
-                if (_numberOfFoldersProcessed == _numberOfFolders)
-                {
-                    Console.WriteLine(string.Format("Finished processing {0} source folders, shutting down actor system...", _numberOfFolders));
-                    Context.System.Shutdown();
-                }
+                Logger.Info(LogMessageParts.ReceivedStop);
+                Stop();
             });
-        }
-
-        #endregion
-
-        protected override void PreStart()
-        {
-            //Console.WriteLine("CloudBackupActor PreStart");
-        }
-
-        protected override void PostStop()
-        {
-            //Console.WriteLine("CloudBackupActor PostStop");
         }
 
         protected override void PreRestart(Exception reason, object message)
@@ -108,7 +75,7 @@ namespace CloudBackupActors.Actors
 
             bool finished = _numberOfFolders == 0;
 
-            StopIfFinished(finished);
+            BackupLogFilesIfFinished(finished);
         }
 
         /// <summary>
@@ -142,7 +109,7 @@ namespace CloudBackupActors.Actors
         private void CreateChildActors()
         {
             Context.ActorOf(Props.Create<BackupStatisticsActor>(), "BackupStatistics");
-            Context.ActorOf(Props.Create<BackupActor>(), "Backup");
+            _backupActor = Context.ActorOf(Props.Create<BackupActor>(), "Backup");
         }
 
         private void Start()
@@ -160,27 +127,25 @@ namespace CloudBackupActors.Actors
 
             bool finished = _numberOfFoldersProcessed == _numberOfFolders;
 
-            StopIfFinished(finished);
+            BackupLogFilesIfFinished(finished);
+        }
+
+        private void BackupLogFilesIfFinished(bool finished)
+        {
+            if (finished)
+            {
+                Console.WriteLine(LogMessageParts.FinishedProcessing, _numberOfFolders);
+                Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
+
+                Thread.Sleep(500);
+
+                _backupActor.Tell(new BackupLogFilesMessage());
+            }
         }
 
         private void Stop()
         {
-            Console.WriteLine(LogMessageParts.FinishedProcessing, _numberOfFolders);
-            Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
-
-            Thread.Sleep(500);
-            
-            BackupLogFilesToOneDrive();
-
             Context.System.Shutdown();
-        }
-
-        private void StopIfFinished(bool finished)
-        {
-            if (finished)
-            {
-                Stop();
-            }
         }
 
         /// <summary>
@@ -228,29 +193,6 @@ namespace CloudBackupActors.Actors
                 //_zipActor.Tell(new ZipMessage(path, zipKind));
                 _zipActor.Tell(new ZipMessage(path, zipKind), Self);
             }
-        }
-        
-        /// <summary>
-        /// Backs up log files to OneDrive.
-        /// </summary>
-        private void BackupLogFilesToOneDrive()
-        {
-            BackupLogFileToOneDrive("logfile.txt");
-            BackupLogFileToOneDrive("logfile1.txt");
-        }
-
-        /// <summary>
-        /// Backs up the log file to OneDrive.
-        /// </summary>
-        /// <param name="logFileName">Name of the log file, e.g., logfile.txt.</param>
-        private void BackupLogFileToOneDrive(string logFileName)
-        {
-            const string BackupFolderPath = @"C:\Users\Kevin\SkyDrive\My Documents";
-            var logFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), logFileName);
-            string backupFilePath = Path.Combine(BackupFolderPath, logFileName);
-            
-            File.Copy(logFilePath, backupFilePath, overwrite: true);
-            Console.WriteLine(string.Format("Backed up {0} to: {1}.", logFileName, backupFilePath));
         }
     }
 }
