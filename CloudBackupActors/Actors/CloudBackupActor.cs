@@ -248,8 +248,9 @@ namespace CloudBackupActors.Actors
             const string BackupFolderPath = @"C:\Users\Kevin\SkyDrive\My Documents";
             var logFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), logFileName);
             string backupFilePath = Path.Combine(BackupFolderPath, logFileName);
+            
             File.Copy(logFilePath, backupFilePath, overwrite: true);
-            Console.WriteLine(string.Format("Backed up {0} to: {1}", logFileName, backupFilePath));
+            Console.WriteLine(string.Format("Backed up {0} to: {1}.", logFileName, backupFilePath));
         }
     }
 }
