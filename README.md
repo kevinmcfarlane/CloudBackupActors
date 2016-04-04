@@ -1,6 +1,6 @@
 # An Application That Backs Up Files To Cloud Storage Using [Akka.NET]
 
-This application backs up zipped folders from a PC to a cloud storage location such as OneDrive. 
+This application backs up zipped folders from a PC to a cloud storage location such as OneDrive and also backs up a log of operations. 
 I created a version of this using conventional .NET code and then, as a learning exercise, I re-implemented it using [Akka.NET]. 
 
 I identify two types of folders - __Regular__ folders and __Visual Studio Project__ folders. 
@@ -36,6 +36,9 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * __FolderCountIncrementedMessage__ - Indicates folder count has incremented, i.e., a folder has been processed.
 * __FolderChangesMessage__ - Represents changes to files in a folder.
 * __BackupMessage__ - Instruction for backing up a zip archive to cloud storage.
+* __BackupLogFilesMessage__ - Instruction for backing up log files to cloud storage.
+* __StopMessage__ - Instruction to stop actor processing.
+
 
 ##### Features
 
