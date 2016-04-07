@@ -38,7 +38,7 @@ namespace CloudBackupActors.Actors
 
         protected override void PostStop()
         {
-            //Console.WriteLine("ZipActor PostStop");
+            Context.Parent.Tell(new StopMessage());
         }
 
         protected override void PreRestart(Exception reason, object message)

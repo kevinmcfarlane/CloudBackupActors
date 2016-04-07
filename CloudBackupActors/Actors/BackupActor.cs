@@ -34,6 +34,11 @@ namespace CloudBackupActors.Actors
                 message => HandleLogFiles());
         }
 
+        protected override void PostStop()
+        {
+            Context.Parent.Tell(new StopMessage());
+        }
+
         private void HandleVisualStudioZipFile(BackupMessage message)
         {
             string sourceFolderPath = message.SourceFolderPath;

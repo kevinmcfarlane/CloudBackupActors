@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,8 @@ using Akka.Actor;
 using Akka.Event;
 using Akka.Routing;
 using CloudBackupActors.Messages;
+
+using Debug = System.Diagnostics.Debug;
 
 namespace CloudBackupActors.Actors
 {
@@ -53,6 +56,20 @@ namespace CloudBackupActors.Actors
             });
         }
 
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            return new OneForOneStrategy( 
+                maxNrOfRetries: 0,
+                withinTimeMilliseconds: 0,
+                decider: Decider.From(exception =>
+                {
+                    Logger.Error("{0}{1} - {2}", LogMessageParts.ApplicationTerminating, Sender.Path.Name, exception.Message);
+
+                    return Directive.Stop;
+                }), 
+                loggingEnabled: false);
+        }
+
         protected override void PreRestart(Exception reason, object message)
         {
             Console.WriteLine("CloudBackupActor PreRestart because: " + reason.Message);
@@ -73,9 +90,10 @@ namespace CloudBackupActors.Actors
             _sourceFolderPaths = File.ReadAllLines(sourceFolderPathsFilePath);
             _numberOfFolders = _sourceFolderPaths.Count();
 
-            bool finished = _numberOfFolders == 0;
-
-            BackupLogFilesIfFinished(finished);
+            if (!_sourceFolderPaths.Any())
+            {
+                Self.Tell(new StopMessage());
+            }
         }
 
         /// <summary>
@@ -86,19 +104,27 @@ namespace CloudBackupActors.Actors
         /// </remarks>
         private void CreateZipActorPool()
         {
-            SupervisorStrategy strategy = new OneForOneStrategy(exception =>
-            {
-                if (exception is IOException)
+            SupervisorStrategy strategy = new OneForOneStrategy(
+                maxNrOfRetries: 0,
+                withinTimeMilliseconds: 0,
+                decider: Decider.From(exception =>
                 {
-                    Logger.Warning(LogMessageParts.SkippingFolder + exception.Message);
+                    if (exception is IOException)
+                    {
+                        Logger.Warning("{0}{1} - {2}", LogMessageParts.SkippingFolder, Sender.Path.Name, exception.Message);
 
-                    IncrementFolderCount();
+                        IncrementFolderCount();
 
-                    return Directive.Resume;
-                }
+                        return Directive.Resume;
+                    }
+                    else
+                    {
+                        Logger.Error("{0}{1} - {2}", LogMessageParts.ApplicationTerminating, Sender.Path.Name, exception.Message);
 
-                return Directive.Restart;
-            });
+                        return Directive.Stop;
+                    }
+                }),
+                loggingEnabled: false);
 
             _zipActor = Context
                 .ActorOf(Props.Create<ZipActor>()
@@ -139,6 +165,7 @@ namespace CloudBackupActors.Actors
 
                 Thread.Sleep(500);
 
+                Debug.Assert(_backupActor != null, "BackupActor should have been created.");
                 _backupActor.Tell(new BackupLogFilesMessage());
             }
         }
