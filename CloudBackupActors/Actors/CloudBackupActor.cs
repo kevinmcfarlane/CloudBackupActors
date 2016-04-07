@@ -22,7 +22,7 @@ namespace CloudBackupActors.Actors
         private int _numberOfFoldersProcessed;
         private IActorRef _zipActor;
         private IActorRef _backupActor;
-        private IEnumerable<string> _sourceFolderPaths;
+        private List<string> _sourceFolderPaths = new List<string>();
         private readonly ILoggingAdapter Logger = Context.GetLogger();
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace CloudBackupActors.Actors
         /// </summary>
         public CloudBackupActor()
         {
-            GetSourceFolderPaths();
+            ReadAllSourceFolderPaths();
 
             CreateZipActorPool();
             CreateChildActors();
@@ -58,7 +58,7 @@ namespace CloudBackupActors.Actors
 
         protected override SupervisorStrategy SupervisorStrategy()
         {
-            return new OneForOneStrategy( 
+            return new OneForOneStrategy(
                 maxNrOfRetries: 0,
                 withinTimeMilliseconds: 0,
                 decider: Decider.From(exception =>
@@ -66,29 +66,19 @@ namespace CloudBackupActors.Actors
                     Logger.Error("{0}{1} - {2}", LogMessageParts.ApplicationTerminating, Sender.Path.Name, exception.Message);
 
                     return Directive.Stop;
-                }), 
+                }),
                 loggingEnabled: false);
         }
 
-        protected override void PreRestart(Exception reason, object message)
-        {
-            Console.WriteLine("CloudBackupActor PreRestart because: " + reason.Message);
-            Logger.Info("CloudBackupActor PreRestart because: " + reason.Message);
-            base.PreRestart(reason, message);
-        }
-
-        protected override void PostRestart(Exception reason)
-        {
-            Console.WriteLine("CloudBackupActor PostRestart because: " + reason.Message);
-            Logger.Info("CloudBackupActor PostRestart because: " + reason.Message);
-            base.PostRestart(reason);
-        }
-
-        private void GetSourceFolderPaths()
+        /// <summary>
+        /// Reads all source folder paths, removing any empty lines before storing.
+        /// </summary>
+        private void ReadAllSourceFolderPaths()
         {
             var sourceFolderPathsFilePath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "SourceFolderPaths.txt");
-            _sourceFolderPaths = File.ReadAllLines(sourceFolderPathsFilePath);
-            _numberOfFolders = _sourceFolderPaths.Count();
+            _sourceFolderPaths = File.ReadAllLines(sourceFolderPathsFilePath).ToList();
+            _sourceFolderPaths.RemoveAll(path => string.IsNullOrWhiteSpace(path));
+            _numberOfFolders = _sourceFolderPaths.Count;
 
             if (!_sourceFolderPaths.Any())
             {

@@ -50,6 +50,15 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 * Actor logging.
 
+
+
+##### Actor supervision handles these scenarios
+
+* Invalid input folder path(s) - action: skip error and resume.
+* Locked Word document (i.e., Word is open on a document so zip operation fails for that folder) - action: skip error and resume.
+* Invalid backup folder path - action: stop and shut down cleanly, as nothing can be backed up.
+* Empty source folders file - action: stop and shut down cleanly since there's nothing to do.
+
 See also [What is an Actor?] and [Akka.NET cheat sheet].
 
 [Actor Model]: <https://en.wikipedia.org/wiki/Actor_model>
