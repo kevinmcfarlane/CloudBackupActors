@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using Akka.Actor;
 using CloudBackupActors.Actors;
 using CloudBackupActors.Messages;
@@ -23,7 +24,9 @@ namespace CloudBackupActors
 
             using (var actorSystem = ActorSystem.Create("CloudBackupActorSystem"))
             {
-                var actor = actorSystem.ActorOf(Props.Create<CloudBackupActor>(), "CloudBackup");
+                var sourceFolderPathsFilePath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "SourceFolderPaths.txt");
+
+                var actor = actorSystem.ActorOf(Props.Create(() => new CloudBackupActor(sourceFolderPathsFilePath)), "CloudBackup");
 
                 actor.Tell(new StartMessage());
 

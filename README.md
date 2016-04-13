@@ -16,6 +16,7 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * [Akka.NET] - A toolkit and runtime for building highly concurrent, distributed, and fault tolerant event-driven applications on .NET & Mono, based on the [Actor Model] of concurrency.
 * [NLog] - A free logging platform for .NET, Silverlight and Windows Phone with rich log routing and management capabilities.
 * [ZipDiff] - A utility for comparing the contents of 2 different zip files.
+* [System.IO.Abstractions] - A library for testing System.IO.
 
 
 ### Overview
@@ -65,5 +66,6 @@ See also [What is an Actor?] and [Akka.NET cheat sheet].
 [Akka.NET]: <http://getakka.net/>
 [NLog]: <http://nlog-project.org/>
 [ZipDiff]: <https://github.com/leekelleher/ZipDiff/>
+[System.IO.Abstractions]: <https://github.com/tathamoddie/System.IO.Abstractions/>
 [What is an Actor?]: <https://petabridge.com/blog/akkadotnet-what-is-an-actor/>
 [Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>

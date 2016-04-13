@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using Akka.Actor;
@@ -18,19 +20,52 @@ namespace CloudBackupActors.Actors
     /// </summary>
     public class CloudBackupActor : ReceiveActor
     {
+        private readonly IFileSystem _fileSystem;
+        private readonly ILoggingAdapter Logger = Context.GetLogger();
         private int _numberOfFolders;
         private int _numberOfFoldersProcessed;
         private IActorRef _zipActor;
         private IActorRef _backupActor;
         private List<string> _sourceFolderPaths = new List<string>();
-        private readonly ILoggingAdapter Logger = Context.GetLogger();
+
+        /// <summary>
+        /// Gets the collection of source folder paths to be zipped.
+        /// </summary>
+        /// <value>
+        /// The source folder paths.
+        /// </value>
+        public ReadOnlyCollection<string> SourceFolderPaths
+        {
+            get
+            {
+                return _sourceFolderPaths.AsReadOnly();
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CloudBackupActor"/> class.
         /// </summary>
-        public CloudBackupActor()
+        /// <param name="sourceFolderPathsFilePath">The source folder paths file path.</param>
+        public CloudBackupActor(string sourceFolderPathsFilePath)
+            : this(
+                sourceFolderPathsFilePath,
+                // Default implementation which calls System.IO
+                fileSystem: new FileSystem() 
+            )
         {
-            ReadAllSourceFolderPaths();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CloudBackupActor"/> class.
+        /// </summary>
+        /// <remarks>Use for unit testing of source folders input.</remarks>
+        /// <param name="sourceFolderPathsFilePath">The source folder paths file path.</param>
+        /// <param name="fileSystem">The file system.</param>
+        public CloudBackupActor(string sourceFolderPathsFilePath, IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+
+            ReadAllSourceFolderPaths(sourceFolderPathsFilePath);
 
             CreateZipActorPool();
             CreateChildActors();
@@ -71,17 +106,18 @@ namespace CloudBackupActors.Actors
         }
 
         /// <summary>
-        /// Reads all source folder paths, removing any empty lines before storing.
+        /// Reads all source folder paths, removing any empty entries before storing.
         /// </summary>
-        private void ReadAllSourceFolderPaths()
+        /// <param name="sourceFolderPathsFilePath">The source folder paths file path.</param>
+        private void ReadAllSourceFolderPaths(string sourceFolderPathsFilePath)
         {
-            var sourceFolderPathsFilePath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent.FullName, "SourceFolderPaths.txt");
-            _sourceFolderPaths = File.ReadAllLines(sourceFolderPathsFilePath).ToList();
+            _sourceFolderPaths = _fileSystem.File.ReadAllLines(sourceFolderPathsFilePath).ToList();
             _sourceFolderPaths.RemoveAll(path => string.IsNullOrWhiteSpace(path));
             _numberOfFolders = _sourceFolderPaths.Count;
 
             if (!_sourceFolderPaths.Any())
             {
+                // Nothing to do
                 Self.Tell(new StopMessage());
             }
         }
@@ -207,8 +243,8 @@ namespace CloudBackupActors.Actors
             {
                 Console.WriteLine(LogMessageParts.Processing, path);
                 Logger.Info(LogMessageParts.Processing, path);
-                //_zipActor.Tell(new ZipMessage(path, zipKind));
                 _zipActor.Tell(new ZipMessage(path, zipKind), Self);
+                //_zipActor.Tell(new ZipMessage(path, zipKind));
             }
         }
     }
