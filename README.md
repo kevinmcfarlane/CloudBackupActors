@@ -64,7 +64,7 @@ See also [What is an Actor?] and [Akka.NET cheat sheet].
 
 ##### TeamCity Continuous Integration
 
-![TeamCity Results](Images/TeamCity.png)
+![TeamCity Results](./Images/TeamCity.png)
 
 [Actor Model]: <https://en.wikipedia.org/wiki/Actor_model>
 [Akka.NET]: <http://getakka.net/>
