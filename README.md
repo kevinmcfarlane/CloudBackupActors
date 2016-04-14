@@ -62,6 +62,10 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 See also [What is an Actor?] and [Akka.NET cheat sheet].
 
+##### TeamCity Continuous Integration
+
+![TeamCity Results](TeamCity.png)
+
 [Actor Model]: <https://en.wikipedia.org/wiki/Actor_model>
 [Akka.NET]: <http://getakka.net/>
 [NLog]: <http://nlog-project.org/>
