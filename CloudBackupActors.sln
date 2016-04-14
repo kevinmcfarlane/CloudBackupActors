@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E42BE36E-57E3-444C-8A01-FABEDD86FA61}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		TeamCity.PNG = TeamCity.PNG
+		Images\TeamCity.PNG = Images\TeamCity.PNG
 	EndProjectSection
 EndProject
 Global
