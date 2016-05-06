@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudBackupActors.Tests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E42BE36E-57E3-444C-8A01-FABEDD86FA61}"
 	ProjectSection(SolutionItems) = preProject
+		Images\ActorHierarchy.png = Images\ActorHierarchy.png
 		README.md = README.md
 		Images\TeamCity.PNG = Images\TeamCity.PNG
 	EndProjectSection

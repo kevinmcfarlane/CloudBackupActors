@@ -40,6 +40,7 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * __BackupLogFilesMessage__ - Instruction for backing up log files to cloud storage.
 * __StopMessage__ - Instruction to stop actor processing.
 
+![Actors and Messages](Images/ActorHierarchy.png)
 
 ##### Features
 
