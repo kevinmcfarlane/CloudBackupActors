@@ -9,7 +9,7 @@ namespace CloudBackupActors.Actors
     public static class LogMessageParts
     {
         public const string Starting = "Starting...";
-        public const string FinishedIn = "Finished in {0}s.";
+        public const string FinishedIn = "Finished in {0}m {1}s.";
         public const string VisualStudioProjects = "Visual Studio projects...";
         public const string FoldersForEncryption = "Folders for encryption...";
         public const string SkippingFolder = "Skipping folder because error in actor: ";

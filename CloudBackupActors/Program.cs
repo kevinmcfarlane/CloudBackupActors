@@ -35,7 +35,11 @@ namespace CloudBackupActors
             }
 
             stopwatch.Stop();
-            string finished = string.Format(LogMessageParts.FinishedIn, (float)stopwatch.ElapsedMilliseconds / 1000);
+
+            long minutes = (stopwatch.ElapsedMilliseconds / (1000 * 60)) % 60;
+            long seconds = (stopwatch.ElapsedMilliseconds / 1000) % 60;
+            string finished = string.Format(LogMessageParts.FinishedIn, minutes, seconds);
+
             Console.WriteLine(finished);
             Logger.Info(finished);
         }
