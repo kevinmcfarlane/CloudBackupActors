@@ -179,21 +179,19 @@ namespace CloudBackupActors.Actors
 
             bool finished = _numberOfFoldersProcessed == _numberOfFolders;
 
-            BackupLogFilesIfFinished(finished);
-        }
-
-        private void BackupLogFilesIfFinished(bool finished)
-        {
             if (finished)
             {
-                Console.WriteLine(LogMessageParts.FinishedProcessing, _numberOfFolders);
-                Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
-
-                Thread.Sleep(500);
-
-                Debug.Assert(_backupActor != null, "BackupActor should have been created.");
-                _backupActor.Tell(new BackupLogFilesMessage());
+                BackupLogFiles();
             }
+        }
+
+        private void BackupLogFiles()
+        {
+            Console.WriteLine(LogMessageParts.FinishedProcessing, _numberOfFolders);
+            Logger.Info(LogMessageParts.FinishedProcessing, _numberOfFolders);
+
+            Debug.Assert(_backupActor != null, "BackupActor should have been created.");
+            _backupActor.Tell(new BackupLogFilesMessage());
         }
 
         private void Stop()

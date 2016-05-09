@@ -68,7 +68,7 @@ namespace CloudBackupActors.Actors
             Logger.Info("Backing up log files...");
             logFileNames.ForEach(logFileName => Logger.Info(logFileName));
 
-            Thread.Sleep(100);
+            Thread.Sleep(500);
 
             BackupLogFiles(logFileNames);
 
@@ -91,7 +91,7 @@ namespace CloudBackupActors.Actors
         /// Backs up log files to cloud storage.
         /// </summary>
         /// <param name="logFileNames">The log file names.</param>
-        private static void BackupLogFiles(List<string> logFileNames)
+        private void BackupLogFiles(List<string> logFileNames)
         {
             foreach (var logFileName in logFileNames)
             {
