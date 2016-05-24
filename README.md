@@ -44,13 +44,13 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 ##### Features
 
-* Actor [routing] using a _[RoundRobinPool]_ strategy.
+* Actor routing using a _[RoundRobinPool]_ strategy.
 
-* Actor [supervision] using a _[OneForOne]_ strategy.
+* Actor supervision using a _[OneForOne]_ strategy.
 
-* Predicate [message filters] (receiving a message from an actor and handling it differently based on a condition).
+* Predicate message [filters] (receiving a message from an actor and handling it differently based on a condition).
 
-* Actor [logging].
+* Actor logging.
 
 
 
@@ -74,9 +74,6 @@ See also [What is an Actor?] and [Akka.NET cheat sheet].
 [System.IO.Abstractions]: <https://github.com/tathamoddie/System.IO.Abstractions/>
 [What is an Actor?]: <https://petabridge.com/blog/akkadotnet-what-is-an-actor/>
 [Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>
-[routing]: <http://getakka.net/docs/working-with-actors/Routers/>
 [RoundRobinPool]: <http://getakka.net/docs/working-with-actors/Routers#roundrobin>
-[supervision]: <http://getakka.net/docs/concepts/supervision/>
 [OneForOne]: <http://getakka.net/docs/concepts/supervision#one-for-one-strategy-vs-all-for-one-strategy>
-[logging]: <http://getakka.net/docs/Logging/>
-[message filters]: <http://dontcodetired.com/blog/post/Using-Predicates-in-AkkaNET-Receive-Actors.aspx>
+[filters]: <http://dontcodetired.com/blog/post/Using-Predicates-in-AkkaNET-Receive-Actors.aspx>
