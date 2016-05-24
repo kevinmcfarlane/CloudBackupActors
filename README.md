@@ -48,7 +48,7 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 
 * Actor supervision using a _[OneForOne]_ strategy.
 
-* Predicate message [filters] (receiving a message from an actor and handling it differently based on a condition).
+* Predicate message filters (receiving a message from an actor and handling it differently based on a condition).
 
 * Actor logging.
 
@@ -76,4 +76,3 @@ See also [What is an Actor?] and [Akka.NET cheat sheet].
 [Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>
 [RoundRobinPool]: <http://getakka.net/docs/working-with-actors/Routers#roundrobin>
 [OneForOne]: <http://getakka.net/docs/concepts/supervision#one-for-one-strategy-vs-all-for-one-strategy>
-[filters]: <http://dontcodetired.com/blog/post/Using-Predicates-in-AkkaNET-Receive-Actors.aspx>
