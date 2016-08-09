@@ -23,15 +23,15 @@ namespace CloudBackupActors.Actors
         public BackupActor()
         {
             Receive<BackupMessage>(
-                handleIf => handleIf.ZipKind == ZipKind.VisualStudio,
-                message => HandleVisualStudioZipFile(message));
+                backupIf => backupIf.ZipKind == ZipKind.VisualStudio,
+                message => BackupVisualStudioZipFile(message));
 
             Receive<BackupMessage>(
-                handleIf => handleIf.ZipKind == ZipKind.Regular,
-                message => HandleZipFile(message));
+                backupIf => backupIf.ZipKind == ZipKind.Regular,
+                message => BackupZipFile(message));
 
             Receive<BackupLogFilesMessage>(
-                message => HandleLogFiles());
+                message => BackupLogFiles());
         }
 
         protected override void PostStop()
@@ -39,7 +39,7 @@ namespace CloudBackupActors.Actors
             Context.Parent.Tell(new StopMessage());
         }
 
-        private void HandleVisualStudioZipFile(BackupMessage message)
+        private void BackupVisualStudioZipFile(BackupMessage message)
         {
             string sourceFolderPath = message.SourceFolderPath;
             Logger.Info("Received: {0} for {1}", typeof(BackupMessage).Name, sourceFolderPath);
@@ -50,7 +50,7 @@ namespace CloudBackupActors.Actors
             Context.Parent.Tell(new IncrementFolderCountMessage(message.ZipKind));
         }
 
-        private void HandleZipFile(BackupMessage message)
+        private void BackupZipFile(BackupMessage message)
         {
             string sourceFolderPath = message.SourceFolderPath;
             Logger.Info("Received: {0} for {1}", typeof(BackupMessage).Name, sourceFolderPath);
@@ -61,7 +61,7 @@ namespace CloudBackupActors.Actors
             Context.Parent.Tell(new IncrementFolderCountMessage(message.ZipKind));
         }
 
-        private void HandleLogFiles()
+        private void BackupLogFiles()
         {
             Logger.Info("Received: {0}", typeof(BackupLogFilesMessage).Name);
             var logFileNames = new List<string> { "logfile.txt", "logfile1.txt" };

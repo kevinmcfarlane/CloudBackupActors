@@ -31,11 +31,6 @@ namespace CloudBackupActors.Actors
                 message => HandleZipMessage(message));
         }
 
-        protected override void PreStart()
-        {
-            //Console.WriteLine("ZipActor PreStart");
-        }
-
         protected override void PostStop()
         {
             Context.Parent.Tell(new StopMessage());

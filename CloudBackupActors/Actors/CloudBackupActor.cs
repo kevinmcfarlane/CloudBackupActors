@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Threading;
 using Akka.Actor;
 using Akka.Event;
 using Akka.Routing;
@@ -115,9 +114,10 @@ namespace CloudBackupActors.Actors
             _sourceFolderPaths.RemoveAll(path => string.IsNullOrWhiteSpace(path));
             _numberOfFolders = _sourceFolderPaths.Count;
 
-            if (!_sourceFolderPaths.Any())
+            bool nothingToDo = !_sourceFolderPaths.Any();
+
+            if (nothingToDo)
             {
-                // Nothing to do
                 Self.Tell(new StopMessage());
             }
         }
