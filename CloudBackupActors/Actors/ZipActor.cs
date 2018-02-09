@@ -99,7 +99,7 @@ namespace CloudBackupActors.Actors
             string zipFilePath = GetVisualStudioZipFilePath(sourceFolderPath);
             string previewZipFilePath = CreatePreviewZip(sourceFolderPath, zipFilePath);
 
-            RemoveBinFolders(previewZipFilePath);
+            RemoveBinAndPackageFolders(previewZipFilePath);
 
             bool result = TryCreateZip(zipFilePath, previewZipFilePath);
 
@@ -156,11 +156,17 @@ namespace CloudBackupActors.Actors
             return previewZipFilePath;
         }
 
-        private void RemoveBinFolders(string zipFilePath)
+        private void RemoveBinAndPackageFolders(string zipFilePath)
         {
             using (ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Update))
             {
-                var folders = archive.Entries.Where(e => e.FullName.Contains(@"\bin\") || e.FullName.Contains(@"\obj\")).ToList();
+                var folders = archive
+                    .Entries
+                    .Where(e =>
+                        e.FullName.Contains(@"\bin\") ||
+                        e.FullName.Contains(@"\obj\") ||
+                        e.FullName.Contains(@"\packages\"))
+                        .ToList();
                 folders.ForEach(e => e.Delete());
             }
         }
