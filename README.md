@@ -74,5 +74,5 @@ See also [What is an Actor?] and [Akka.NET cheat sheet].
 [System.IO.Abstractions]: <https://github.com/tathamoddie/System.IO.Abstractions/>
 [What is an Actor?]: <https://petabridge.com/blog/akkadotnet-what-is-an-actor/>
 [Akka.NET cheat sheet]: <http://dontcodetired.com/live/downloads/akkacheat/AkkaDotNetCheatSheet.pdf>
-[RoundRobinPool]: <http://getakka.net/docs/working-with-actors/Routers#roundrobin>
-[OneForOne]: <http://getakka.net/docs/concepts/supervision#one-for-one-strategy-vs-all-for-one-strategy>
+[RoundRobinPool]: <http://getakka.net/articles/actors/routers.html>
+[OneForOne]: <http://getakka.net/articles/concepts/supervision.html>
