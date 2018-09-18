@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -83,8 +82,7 @@ namespace CloudBackupActors.Actors
         private void BackupZipFile(BackupMessage message, string backupFilePath)
         {
             File.Copy(message.ZipFilePath, backupFilePath, overwrite: true);
-            Console.WriteLine("Backed up to: " + backupFilePath);
-            Logger.Info("Backed up to: " + backupFilePath);
+            Logger.Info($"Backed up to: {backupFilePath}");
         }
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace CloudBackupActors.Actors
                 string backupFilePath = Path.Combine(BackupFolderPath, logFileName);
 
                 File.Copy(logFilePath, backupFilePath, overwrite: true);
-                Console.WriteLine(string.Format("Backed up {0} to: {1}.", logFileName, backupFilePath));
+                Logger.Info($"Backed up {logFileName} to: {backupFilePath}.");
             }
         }
 

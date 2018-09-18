@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Akka.Actor;
 using Akka.Event;
 using CloudBackupActors.Messages;
@@ -28,14 +27,11 @@ namespace CloudBackupActors.Actors
             Receive<string>(message =>
             {
                 Logger.Info("Received: {0}", message);
-                Console.WriteLine(message);
-                Logger.Info(message);
             });
         }
 
         private void LogChanges(string zipFilePath, Differences differences)
         {
-            Console.WriteLine("In {0}...", zipFilePath);
             Logger.Info("In {0}...", zipFilePath);
 
             var added = differences.Added;
@@ -46,29 +42,25 @@ namespace CloudBackupActors.Actors
 
             if (numberOfDifferences > 0)
             {
-                Console.WriteLine("Number of differences = {0}.", numberOfDifferences);
                 Logger.Info("Number of differences = {0}.", numberOfDifferences);
             }
 
             if (added.Any())
             {
-                Console.WriteLine("Added...");
                 Logger.Info("Added...");
-                added.Keys.ToList().ForEach(k => { Console.WriteLine(k); Logger.Info(k); });
+                added.Keys.ToList().ForEach(k => { Logger.Info(k); });
             }
 
             if (changed.Any())
             {
-                Console.WriteLine("Changed...");
                 Logger.Info("Changed...");
-                changed.Keys.ToList().ForEach(k => { Console.WriteLine(k); Logger.Info(k); });
+                changed.Keys.ToList().ForEach(k => { Logger.Info(k); });
             }
 
             if (removed.Any())
             {
-                Console.WriteLine("Removed...");
                 Logger.Info("Removed...");
-                removed.Keys.ToList().ForEach(k => { Console.WriteLine(k); Logger.Info(k); });
+                removed.Keys.ToList().ForEach(k => { Logger.Info(k); });
             }
         }
     }

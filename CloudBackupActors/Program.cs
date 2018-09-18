@@ -17,10 +17,7 @@ namespace CloudBackupActors
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            string starting = LogMessageParts.Starting;
-            Console.WriteLine(starting);
-            Logger.Info(starting);
-            Console.WriteLine(Environment.NewLine);
+            Logger.Info("Starting...");
 
             using (var actorSystem = ActorSystem.Create("CloudBackupActorSystem"))
             {
@@ -31,17 +28,15 @@ namespace CloudBackupActors
                 actor.Tell(new StartMessage());
 
                 actorSystem.AwaitTermination();
-                Console.WriteLine("Actor system shutdown...");
+                Logger.Info("Actor system shutdown...");
             }
 
             stopwatch.Stop();
 
             long minutes = (stopwatch.ElapsedMilliseconds / (1000 * 60)) % 60;
             long seconds = (stopwatch.ElapsedMilliseconds / 1000) % 60;
-            string finished = string.Format(LogMessageParts.FinishedIn, minutes, seconds);
 
-            Console.WriteLine(finished);
-            Logger.Info(finished);
+            Logger.Info($"Finished in {minutes}m {seconds}s.");
         }
     }
 }

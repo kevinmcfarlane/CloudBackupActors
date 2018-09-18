@@ -38,14 +38,12 @@ namespace CloudBackupActors.Actors
 
         protected override void PreRestart(Exception reason, object message)
         {
-            Console.WriteLine("ZipActor PreRestart because: " + reason.Message);
             Logger.Info("ZipActor PreRestart because: " + reason.Message);
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            Console.WriteLine("ZipActor PostRestart because: " + reason.Message);
             Logger.Info("ZipActor PostRestart because: " + reason.Message);
             base.PostRestart(reason);
         }
@@ -150,7 +148,6 @@ namespace CloudBackupActors.Actors
             }
 
             ZipFile.CreateFromDirectory(sourceFolderPath, previewZipFilePath);
-            Console.WriteLine("Created Preview Zip: " + previewZipFilePath);
             Logger.Info("Created Preview Zip: " + previewZipFilePath);
 
             return previewZipFilePath;
@@ -177,7 +174,6 @@ namespace CloudBackupActors.Actors
             string encryptedFilePath = GetEncryptedFilePath(sourceFolderPath);
 
             Encrypt(zipFilePath, encryptedFilePath);
-            Console.WriteLine("Encrypted zip: " + encryptedFilePath);
             Logger.Info("Encrypted zip: " + encryptedFilePath);
         }
 
@@ -208,7 +204,6 @@ namespace CloudBackupActors.Actors
 
                     File.Delete(zipFilePath);
                     File.Move(previewZipFilePath, zipFilePath);
-                    Console.WriteLine("Created Updated Zip: " + zipFilePath);
                     Logger.Info("Created Updated Zip: " + zipFilePath);
 
                     result = true;
@@ -216,14 +211,12 @@ namespace CloudBackupActors.Actors
                 else
                 {
                     File.Delete(previewZipFilePath);
-                    Console.WriteLine("Deleted Preview Zip: " + previewZipFilePath);
                     Logger.Info("Deleted Preview Zip: " + previewZipFilePath);
                 }
             }
             else
             {
                 File.Move(previewZipFilePath, zipFilePath);
-                Console.WriteLine("Created New Zip: " + zipFilePath);
                 Logger.Info("Created New Zip: " + zipFilePath);
 
                 result = true;
