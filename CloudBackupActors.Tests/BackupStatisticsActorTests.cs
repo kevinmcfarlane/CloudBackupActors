@@ -21,9 +21,7 @@ namespace CloudBackupActors.Tests
 
             EventFilter
                 .Info(received)
-                .And
-                .Info(noChangesDetected)
-                .Expect(expectedCount: 2, action: () => actor.Tell(noChangesDetected));
+                .Expect(expectedCount: 1, action: () => actor.Tell(noChangesDetected));
         }
     }
 }
