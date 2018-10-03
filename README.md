@@ -1,6 +1,6 @@
 [![Build Status](https://dev.azure.com/kevinmcfarlane/CloudBackupActors/_apis/build/status/kevinmcfarlane.CloudBackupActors)](https://dev.azure.com/kevinmcfarlane/CloudBackupActors/_build/latest?definitionId=4)
 
-![Azure Pipelines Build](Images/AzurePipelinesBuild.PNG)
+![Azure Pipelines Build](Images/AzurePipelinesBuild.png)
 
 # An Application That Backs Up Files To Cloud Storage Using [Akka.NET]
 
