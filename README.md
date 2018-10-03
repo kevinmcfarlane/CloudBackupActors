@@ -1,5 +1,7 @@
 [![Build Status](https://dev.azure.com/kevinmcfarlane/CloudBackupActors/_apis/build/status/kevinmcfarlane.CloudBackupActors)](https://dev.azure.com/kevinmcfarlane/CloudBackupActors/_build/latest?definitionId=4)
 
+![Azure Pipelines Build](Images/AzurePipelinesBuild.PNG)
+
 # An Application That Backs Up Files To Cloud Storage Using [Akka.NET]
 
 This application backs up zipped folders from a PC to a cloud storage location such as OneDrive and also backs up a log of operations. 
@@ -64,6 +66,8 @@ The input is from a text file, SourceFolderPaths.txt, that contains a list of fu
 * Empty source folders file - action: stop and shut down cleanly since there's nothing to do.
 
 See also [What is an Actor?] and [Akka.NET cheat sheet].
+
+
 
 ##### TeamCity Continuous Integration
 
